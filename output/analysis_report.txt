@@ -1,0 +1,3 @@
+Public Opinion Analysis Report
+
+Run src/main.py to generate the latest analysis report.
