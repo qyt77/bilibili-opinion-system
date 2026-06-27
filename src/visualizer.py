@@ -1,6 +1,7 @@
 import os
 
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 import pandas as pd
 from wordcloud import WordCloud
 
@@ -26,13 +27,19 @@ class CommentVisualizer:
     """
 
     def __init__(self):
-        plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei"]
         plt.rcParams["axes.unicode_minus"] = False
         plt.rcParams["figure.facecolor"] = "white"
         plt.rcParams["axes.facecolor"] = "white"
         plt.rcParams["savefig.facecolor"] = "white"
 
         self.font_path = self.get_chinese_font_path()
+
+        if self.font_path:
+            font_name = fm.FontProperties(fname=self.font_path).get_name()
+            plt.rcParams["font.family"] = font_name
+            plt.rcParams["font.sans-serif"] = [font_name]
+        else:
+            plt.rcParams["font.family"] = "sans-serif"
 
         self.colors = {
             "main": "#355C7D",
@@ -57,6 +64,7 @@ class CommentVisualizer:
             "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
             "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
             "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",
+            "/usr/share/fonts/truetype/noto/NotoSansCJK-Bold.ttc",
         ]
 
         for font in possible_fonts:
@@ -65,7 +73,6 @@ class CommentVisualizer:
 
         print("警告：未找到中文字体，词云中文可能显示为方框。")
         return None
-
     def load_sentiment_data(self, sentiment_path: str) -> pd.DataFrame:
         """
         读取情感分析后的评论数据。
