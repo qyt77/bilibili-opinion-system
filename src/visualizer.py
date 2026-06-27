@@ -47,19 +47,25 @@ class CommentVisualizer:
 
     def get_chinese_font_path(self):
         """
-        获取中文字体路径，避免词云中文乱码。
+        获取中文字体路径，兼容 Windows 本地环境和 Streamlit Cloud/Linux 环境。
         """
         possible_fonts = [
             r"C:\Windows\Fonts\msyh.ttc",
             r"C:\Windows\Fonts\simhei.ttf",
-            r"C:\Windows\Fonts\simsun.ttc"
+            r"C:\Windows\Fonts\simsun.ttc",
+
+            "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+            "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
+            "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",
+            "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc",
+            "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",
         ]
 
         for font in possible_fonts:
             if os.path.exists(font):
                 return font
 
-        print("警告：未找到常见中文字体，词云可能出现乱码。")
+        print("警告：未找到中文字体，词云中文可能显示为方框。")
         return None
 
     def load_sentiment_data(self, sentiment_path: str) -> pd.DataFrame:
